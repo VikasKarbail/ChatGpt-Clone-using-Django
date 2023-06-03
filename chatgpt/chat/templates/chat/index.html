@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        
+        <title> ChatGpt</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href={% static 'chat/style.css' %}>
+    </head>
+    <body>
+          <nav class="navbar navbar-dark bg-dark">
+            <h1 > Chat GPT</h1>
+         </nav>
+
+         
+         <div class="chat-container">
+          <div class="card flex-grow-1">
+            
+            <div class="card-body messages-box">
+              
+              <ul class="list-unstyled messages-list">
+                
+                <li class="message received">
+                  <div class="message-text">
+                    <div class="message-sender">
+                      <b>AI</b>
+                    </div>
+                    <div class="message-content">
+                      Hi, I am your AI Chatbot, you can ask me anything.
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              
+            </div>
+            <br><br>
+            <br><br>
+            <br><br>
+          </div>
+       
+          <footer>
+            <div class="search-bar">
+                <form id="search-form" action="/search" method="GET">
+                  {%csrf_token%}
+                  <input type="text" id="search-input" name="q" placeholder="Search...">
+                  <button type="submit">
+                    <img src="https://icons-for-free.com/iconfiles/png/512/content+send+icon-1320087227200139227.png" alt="submit" border="0" />
+                  </button>
+            
+                </form>
+              </div>
+              <p style="text-align:center">Created by Vikas K.R. © 2023</p>
+          </footer>
+          
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+          <script>
+            const messagesList = document.querySelector('.messages-list');
+            const messageForm = document.querySelector('#search-form');
+            const messageInput = document.querySelector('#search-input');
+          
+            messageForm.addEventListener('submit', (event) => {
+              event.preventDefault();
+          
+              const message = messageInput.value.trim();
+              if (message.length === 0) {
+                return;
+              }
+          
+              const messageItem = document.createElement('li');
+              messageItem.classList.add('message', 'sent');
+              messageItem.innerHTML = `
+                  <div class="message-text">
+                      <div class="message-sender">
+                          <b>You</b>
+                      </div>
+                      <div class="message-content">
+                          ${message}
+                      </div>
+                  </div>`;
+              messagesList.appendChild(messageItem);
+          
+              messageInput.value = '';
+          
+              fetch('', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                  'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                  'message': message
+                })
+              })
+                .then(response => response.json())
+                .then(data => {
+                  const response = data.response;
+                  const messageItem = document.createElement('li');
+                  messageItem.classList.add('message', 'received');
+                  messageItem.innerHTML = `
+                  <div class="message-text">
+                      <div class="message-sender">
+                        <b>AI </b>
+                      </div>
+                      <div class="message-content">
+                          ${response}
+                      </div>
+                  </div>
+                    `;
+                  messagesList.appendChild(messageItem);
+                });
+            });
+          
+          </script>
+    </body>
+</html>
