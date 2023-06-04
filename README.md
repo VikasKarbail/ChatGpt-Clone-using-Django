@@ -66,3 +66,7 @@ Acknowledgments
 The ChatGPT model used in this project is developed by OpenAI.
 Special thanks to the open-source community for their valuable contributions.
 Feel free to contribute, report issues, or provide feedback.
+
+
+https://github.com/VikasKarbail/ChatGpt-Clone-using-Django/assets/117006055/82eee248-e15e-4d62-89bd-543d5753a2d2
+
