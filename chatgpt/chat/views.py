@@ -4,7 +4,7 @@ import os, openai
 
 
 #openai.organization = "org-9ge91FBt6iMFTVNwLvML94f2"
-openai_api_key = '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'
+openai_api_key = '<openai key>'
 openai.api_key = openai_api_key
 
 def ask_openai(message):
